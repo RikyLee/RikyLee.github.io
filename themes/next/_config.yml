@@ -168,7 +168,7 @@ sidebar:
 
   # Scroll percent label in b2t button
   scrollpercent: false
-  
+
   # Enable sidebar on narrow view
   onmobile: false
 
@@ -342,7 +342,7 @@ changyan:
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-livere_uid: MTAyMC8zMjg3MS85NDMy
+#livere_uid: MTAyMC8zMjg3MS85NDMy
 
 # Baidu Share
 # Available value:
