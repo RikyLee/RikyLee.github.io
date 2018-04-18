@@ -98,11 +98,11 @@
 <meta name="keywords" content="mongodb">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongodb-replica-set (mongodb主从仲裁节点配置)">
-<meta property="og:url" content="https://aiguanglee.github.io/2017/10/28/mongodb-replica-set (mongodb主从仲裁节点配置)/index.html">
+<meta property="og:url" content="http://www.rikylee.cn/2017/10/28/mongodb-replica-set (mongodb主从仲裁节点配置)/index.html">
 <meta property="og:site_name" content="工作杂记">
 <meta property="og:description" content="环境介绍 系统：CentOS 6.9 MongoDB版本：mongodb-linux-x86_64-rhel62-3.4.10  设备3台：172.16.10.42(27020端口)，172.16.10.90(27020端口)，172.16.10.199(27020端口)，如果没有足够设备也可部署同一台设备上面，只需要修改端口即可。   准备工作 同步系统时间：保证各个机器的时间一致，可使用/us">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-02T08:44:34.290Z">
+<meta property="og:updated_time" content="2018-04-18T07:53:39.910Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongodb-replica-set (mongodb主从仲裁节点配置)">
 <meta name="twitter:description" content="环境介绍 系统：CentOS 6.9 MongoDB版本：mongodb-linux-x86_64-rhel62-3.4.10  设备3台：172.16.10.42(27020端口)，172.16.10.90(27020端口)，172.16.10.199(27020端口)，如果没有足够设备也可部署同一台设备上面，只需要修改端口即可。   准备工作 同步系统时间：保证各个机器的时间一致，可使用/us">
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="https://aiguanglee.github.io/2017/10/28/mongodb-replica-set (mongodb主从仲裁节点配置)/"/>
+  <link rel="canonical" href="http://www.rikylee.cn/2017/10/28/mongodb-replica-set (mongodb主从仲裁节点配置)/"/>
 
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://aiguanglee.github.io/2017/10/28/mongodb-replica-set (mongodb主从仲裁节点配置)/">
+    <link itemprop="mainEntityOfPage" href="http://www.rikylee.cn/2017/10/28/mongodb-replica-set (mongodb主从仲裁节点配置)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Riky Lee">
@@ -427,7 +427,7 @@
 </li>
 <li><p>拷贝主节点 (172.16.10.42) <code>/home/mongodb</code> 目录下的 <code>mongodb.keyfile</code>、<code>mongod.conf</code>文件以及 <code>mongodb-linux-x86_64-rhel62-3.4.10</code> 文件夹 到从节点已经仲裁节点的<code>/home/mongodb</code> 目录下</p>
 </li>
-<li><p>修改仲裁节点` mongod.conf`` 文件内容如下</p>
+<li><p>修改仲裁节点<code>mongod.conf`</code> 文件内容如下</p>
 </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">systemLog:</span><br><span class="line">   destination: file</span><br><span class="line">   path: /home/mongodb/log/mongod.log</span><br><span class="line">   logAppend: true</span><br><span class="line">storage:</span><br><span class="line">  dbPath: /home/mongodb/data</span><br><span class="line">  journal:</span><br><span class="line">    enabled: false                                         # 仲裁节点本地不保存数据</span><br><span class="line">  directoryPerDB: true</span><br><span class="line">processManagement:</span><br><span class="line">   fork: true</span><br><span class="line">   pidFilePath: /home/mongodb/mongod.pid</span><br><span class="line">net:</span><br><span class="line">   port: 27020</span><br><span class="line">setParameter:</span><br><span class="line">  failIndexKeyTooLong: false</span><br><span class="line">security:</span><br><span class="line">  keyFile: /home/mongodb/mongodb.keyfile       # 使用keyfile认证</span><br><span class="line">  authorization: enabled</span><br><span class="line">replication:</span><br><span class="line">  replSetName: mongodb_set   #名称可以自定义，但是必须保证主节点、从节点、仲裁节点统一</span><br></pre></td></tr></table></figure>
@@ -532,8 +532,6 @@
 
           
   <div class="comments" id="comments">
-    
-      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjg3MS85NDMy"></div>
     
   </div>
 
@@ -790,17 +788,6 @@
 
 
 
-  
-    <script type="text/javascript">
-      (function(d, s) {
-        var j, e = d.getElementsByTagName(s)[0];
-        if (typeof LivereTower === 'function') { return; }
-        j = d.createElement(s);
-        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-        j.async = true;
-        e.parentNode.insertBefore(j, e);
-      })(document, 'script');
-    </script>
   
 
 
