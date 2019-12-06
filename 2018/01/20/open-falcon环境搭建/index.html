@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="open falcon,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="切换源为阿里源(非必须，个人习惯) 备份默认的yum mv /etc/yum.repos.d /etc/yum.repos.d.backup  设置新的yum目录 mkdir /etc/yum.repos.d  下载阿里yum配置到该目录中 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos">
+<meta name="keywords" content="open falcon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小米开源监控框架open falcon 入坑之环境搭建">
+<meta property="og:url" content="http://www.rikylee.cn/2018/01/20/open-falcon环境搭建/index.html">
+<meta property="og:site_name" content="工作杂记">
+<meta property="og:description" content="切换源为阿里源(非必须，个人习惯) 备份默认的yum mv /etc/yum.repos.d /etc/yum.repos.d.backup  设置新的yum目录 mkdir /etc/yum.repos.d  下载阿里yum配置到该目录中 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/aiguanglee/program-notes/master/screenshots/agent_pic.png">
+<meta property="og:updated_time" content="2019-12-06T08:12:33.617Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小米开源监控框架open falcon 入坑之环境搭建">
+<meta name="twitter:description" content="切换源为阿里源(非必须，个人习惯) 备份默认的yum mv /etc/yum.repos.d /etc/yum.repos.d.backup  设置新的yum目录 mkdir /etc/yum.repos.d  下载阿里yum配置到该目录中 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/aiguanglee/program-notes/master/screenshots/agent_pic.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"搜索关键字","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.rikylee.cn/2018/01/20/open-falcon环境搭建/">
+
+
+
+
+
+  <title>小米开源监控框架open falcon 入坑之环境搭建 | 工作杂记</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">工作杂记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.rikylee.cn/2018/01/20/open-falcon环境搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Riky Lee">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="工作杂记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">小米开源监控框架open falcon 入坑之环境搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T11:00:40+08:00">
+                2018-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/20/open-falcon环境搭建/" class="leancloud_visitors" data-flag-title="小米开源监控框架open falcon 入坑之环境搭建">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="切换源为阿里源-非必须，个人习惯"><a href="#切换源为阿里源-非必须，个人习惯" class="headerlink" title="切换源为阿里源(非必须，个人习惯)"></a>切换源为阿里源(非必须，个人习惯)</h2><ul>
+<li><p>备份默认的yum <code>mv /etc/yum.repos.d /etc/yum.repos.d.backup</code></p>
+</li>
+<li><p>设置新的yum目录 <code>mkdir /etc/yum.repos.d</code></p>
+</li>
+<li><p>下载阿里yum配置到该目录中 <code>wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</code></p>
+</li>
+<li><p>重建缓存</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum clean all</span><br><span class="line">sudo yum makecache</span><br></pre></td></tr></table></figure>
+<ul>
+<li>升级所有包（改变软件设置和系统设置，系统版本内核都升级，故需要几分钟耐心等待<code>yum update -y</code></li>
+</ul>
+<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><ul>
+<li><p>使用yum命令安装 <code>sudo yum install -y git</code></p>
+</li>
+<li><p>安装结束后安全起见，确认是否满足官方要求的Git &gt;= 1.7.5 <code>git version</code></p>
+</li>
+</ul>
+<h2 id="安装go语言环境"><a href="#安装go语言环境" class="headerlink" title="安装go语言环境"></a>安装go语言环境</h2><ul>
+<li>因为官方yum和阿里yum都没有go的安装包，故只能通过fedora的epel仓库来安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release</span><br><span class="line">yum install golang -y</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装结束后安全起见，确认是否满足官方要求的Go &gt;= 1.6 <code>go version</code></li>
+</ul>
+<h2 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h2><ul>
+<li><p>由于部署go时已经安装了epel，故直接执行下面的安装命令（如果没有装epel，会提示No package redis available，也就是没有安装包可用，因为官方yum和阿里yum都没有redis，故只能通过fedora的epel仓库来安装） <code>yum install redis -y</code></p>
+</li>
+<li><p>启动redis  <code>sudo systemctl start redis</code></p>
+</li>
+<li><p>设置redis开机启动 <code>sudo systemctl enable redis</code></p>
+</li>
+<li><p>可以用下面的语句查看redis是否开启 <code>sudo systemctl status redis</code></p>
+</li>
+</ul>
+<h2 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h2><ul>
+<li><p>Centos7自带的mysql是mariadb ,我们可以通过如下命令查看 <code>yum search mysql|tac</code></p>
+</li>
+<li><p>开始安装mariadb <code>sudo yum -y install mariadb mariadb-server</code></p>
+</li>
+<li><p>设置开机自启动mysql <code>sudo systemctl enable mariadb.service</code></p>
+</li>
+<li><p>启动mysql   <code>sudo systemctl start mariadb.service</code></p>
+</li>
+<li><p>初始化mysql数据库，并配置root用户密码 <code>sudo mysql_secure_installation</code></p>
+</li>
+</ul>
+<h2 id="安装open-falcon"><a href="#安装open-falcon" class="headerlink" title="安装open falcon"></a>安装open falcon</h2><p>获取open falcon 二进制包，有两种方式</p>
+<ul>
+<li><p>方式一：下载源代码，然后手动编译 <code>go env</code> 获取GOPATH的位置</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH &amp;&amp; mkdir src/github.com/open-falcon &amp;&amp; cd src/github.com/open-falcon</span><br><span class="line"></span><br><span class="line">git clone https://github.com/open-falcon/falcon-plus.git</span><br><span class="line"></span><br><span class="line">make all</span><br><span class="line"></span><br><span class="line">make pack</span><br></pre></td></tr></table></figure>
+<p>  以上步骤完成之后，在$GOPATH/src/github.com/open-falcon/falcon-plus 目录下，可以找到open-falcon-v0.2.1.tar.gz文件</p>
+</li>
+<li><p>方式二：下载 open falcon 二进制包 <code>wget https://github.com/open-falcon/falcon-plus/releases/download/v0.2.1/open-falcon-v0.2.1.tar.gz</code></p>
+</li>
+<li><p>创建工作目录，并解压二进制包到工作目录下 <code>cd ~ &amp;&amp; mkdir open-falcon &amp;&amp; tar xf open-falcon-v0.2.1.tar.gz -C open-falcon</code></p>
+</li>
+<li><p>初始化mysql表结构</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cd ~ &amp;&amp; git clone https://github.com/open-falcon/falcon-plus.git</span><br><span class="line"></span><br><span class="line">cd ./falcon-plus/scripts/mysql/db_schema/</span><br><span class="line"></span><br><span class="line">mysql -h 127.0.0.1 -u root -p &lt; 1_uic-db-schema.sql</span><br><span class="line"></span><br><span class="line">mysql -h 127.0.0.1 -u root -p &lt; 2_portal-db-schema.sql</span><br><span class="line"></span><br><span class="line">mysql -h 127.0.0.1 -u root -p &lt; 3_dashboard-db-schema.sql</span><br><span class="line"></span><br><span class="line">mysql -h 127.0.0.1 -u root -p &lt; 4_graph-db-schema.sql</span><br><span class="line"></span><br><span class="line">mysql -h 127.0.0.1 -u root -p &lt; 5_alarms-db-schema.sql</span><br><span class="line"></span><br><span class="line">cd ~</span><br><span class="line"></span><br><span class="line">rm -rf ./falcon-plus/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置Agent</p>
+<p>  agent用于采集机器负载监控指标，比如cpu.idle、load.1min、disk.io.util等等，每隔60秒push给Transfer。agent与Transfer建立了长连接，数据发送速度比较快，agent提供了一个http接口/v1/push用于接收用户手工push的一些数据，然后通过长连接迅速转发给Transfer。 <code>vi ~/open-falcon/agent/config/cfg.json</code></p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "debug": true,  # 控制一些debug信息的输出，生产环境通常设置为false</span><br><span class="line">    "hostname": "", # agent采集了数据发给transfer，endpoint就设置为了hostname，默认通过`hostname`获取，如果配置中配置了hostname，就用配置中的</span><br><span class="line">    "ip": "", # agent与hbs心跳的时候会把自己的ip地址发给hbs，agent会自动探测本机ip，如果不想让agent自动探测，可以手工修改该配置</span><br><span class="line">    "plugin": &#123;</span><br><span class="line">        "enabled": false, # 默认不开启插件机制</span><br><span class="line">        "dir": "./plugin",  # 把放置插件脚本的git repo clone到这个目录</span><br><span class="line">        "git": "https://github.com/open-falcon/plugin.git", # 放置插件脚本的git repo地址</span><br><span class="line">        "logs": "./logs" # 插件执行的log，如果插件执行有问题，可以去这个目录看log</span><br><span class="line">    &#125;,</span><br><span class="line">    "heartbeat": &#123;</span><br><span class="line">        "enabled": true,  # 此处enabled要设置为true</span><br><span class="line">        "addr": "127.0.0.1:6030", # hbs的地址，端口是hbs的rpc端口</span><br><span class="line">        "interval": 60, # 心跳周期，单位是秒</span><br><span class="line">        "timeout": 1000 # 连接hbs的超时时间，单位是毫秒</span><br><span class="line">    &#125;,</span><br><span class="line">    "transfer": &#123;</span><br><span class="line">        "enabled": true,</span><br><span class="line">        "addrs": [</span><br><span class="line">            <span class="string">"127.0.0.1:18433"</span></span><br><span class="line">        ],  # transfer的地址，端口是transfer的rpc端口, 可以支持写多个transfer的地址，agent会保证HA</span><br><span class="line">        "interval": 60, # 采集周期，单位是秒，即agent一分钟采集一次数据发给transfer</span><br><span class="line">        "timeout": 1000 # 连接transfer的超时时间，单位是毫秒</span><br><span class="line">    &#125;,</span><br><span class="line">    "http": &#123;</span><br><span class="line">        "enabled": true,  # 是否要监听http端口</span><br><span class="line">        "listen": ":1988",</span><br><span class="line">        "backdoor": false</span><br><span class="line">    &#125;,</span><br><span class="line">    "collector": &#123;</span><br><span class="line">        "ifacePrefix": ["eth", "em"], # 默认配置只会采集网卡名称前缀是eth、em的网卡流量，配置为空就会采集所有的，lo的也会采集。可以从/proc/net/dev看到各个网卡的流量信息</span><br><span class="line">        "mountPoint": []</span><br><span class="line">    &#125;,</span><br><span class="line">    "default_tags": &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    "ignore": &#123;  # 默认采集了200多个metric，可以通过ignore设置为不采集</span><br><span class="line">        "cpu.busy": true,</span><br><span class="line">        "df.bytes.free": true,</span><br><span class="line">        "df.bytes.total": true,</span><br><span class="line">        "df.bytes.used": true,</span><br><span class="line">        "df.bytes.used.percent": true,</span><br><span class="line">        "df.inodes.total": true,</span><br><span class="line">        "df.inodes.free": true,</span><br><span class="line">        "df.inodes.used": true,</span><br><span class="line">        "df.inodes.used.percent": true,</span><br><span class="line">        "mem.memtotal": true,</span><br><span class="line">        "mem.memused": true,</span><br><span class="line">        "mem.memused.percent": true,</span><br><span class="line">        "mem.memfree": true,</span><br><span class="line">        "mem.swaptotal": true,</span><br><span class="line">        "mem.swapused": true,</span><br><span class="line">        "mem.swapfree": true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动agent命令 <code>~/open-falcon/open-falcon start agent</code></p>
+<p>  停止agent命令 <code>~/open-falcon/open-falcon stop agent</code></p>
+<p>  监控agent命令 <code>~/open-falcon/open-falcon monitor agent</code></p>
+<p>  防火墙开放1988端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=1988/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>  浏览器访问<a href="http://ip:1988" target="_blank" rel="noopener">http://ip:1988</a> 端口,即可看到agent采集到的数据</p>
+<p>  <img src="https://raw.githubusercontent.com/aiguanglee/program-notes/master/screenshots/agent_pic.png" alt="agent采集数据"></p>
+</li>
+<li><p>配置Transfer</p>
+<p>  transfer是数据转发服务。它接收agent上报的数据，然后按照哈希规则进行数据分片、并将分片后的数据分别push给graph&amp;judge等组件。<code>vi ~/open-falcon/transfer/config/cfg.json</code></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"minStep"</span>: <span class="number">30</span>,</span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6060"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"rpc"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:8433"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"socket"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:4444"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>: <span class="number">3600</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"judge"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"batch"</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="attr">"connTimeout"</span>: <span class="number">1000</span>,</span><br><span class="line">        <span class="attr">"callTimeout"</span>: <span class="number">5000</span>,</span><br><span class="line">        <span class="attr">"maxConns"</span>: <span class="number">32</span>,</span><br><span class="line">        <span class="attr">"maxIdle"</span>: <span class="number">32</span>,</span><br><span class="line">        <span class="attr">"replicas"</span>: <span class="number">500</span>,</span><br><span class="line">        <span class="attr">"cluster"</span>: &#123;</span><br><span class="line">            <span class="attr">"judge-00"</span> : <span class="string">"127.0.0.1:6080"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"graph"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"batch"</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="attr">"connTimeout"</span>: <span class="number">1000</span>,</span><br><span class="line">        <span class="attr">"callTimeout"</span>: <span class="number">5000</span>,</span><br><span class="line">        <span class="attr">"maxConns"</span>: <span class="number">32</span>,</span><br><span class="line">        <span class="attr">"maxIdle"</span>: <span class="number">32</span>,</span><br><span class="line">        <span class="attr">"replicas"</span>: <span class="number">500</span>,</span><br><span class="line">        <span class="attr">"cluster"</span>: &#123;</span><br><span class="line">            <span class="attr">"graph-00"</span> : <span class="string">"127.0.0.1:6070"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"tsdb"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"batch"</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="attr">"connTimeout"</span>: <span class="number">1000</span>,</span><br><span class="line">        <span class="attr">"callTimeout"</span>: <span class="number">5000</span>,</span><br><span class="line">        <span class="attr">"maxConns"</span>: <span class="number">32</span>,</span><br><span class="line">        <span class="attr">"maxIdle"</span>: <span class="number">32</span>,</span><br><span class="line">        <span class="attr">"retry"</span>: <span class="number">3</span>,</span><br><span class="line">        <span class="attr">"address"</span>: <span class="string">"127.0.0.1:8088"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  配置说明</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">debug: true/false, 如果为true，日志中会打印debug信息</span><br><span class="line"></span><br><span class="line">minStep: 30, 允许上报的数据最小间隔，默认为30秒</span><br><span class="line"></span><br><span class="line">http</span><br><span class="line">    - enabled: true/false, 表示是否开启该http端口，该端口为控制端口，主要用来对transfer发送控制命令、统计命令、debug命令等</span><br><span class="line">    - listen: 表示监听的http端口</span><br><span class="line"></span><br><span class="line">rpc</span><br><span class="line">    - enabled: true/false, 表示是否开启该jsonrpc数据接收端口, Agent发送数据使用的就是该端口</span><br><span class="line">    - listen: 表示监听的http端口</span><br><span class="line"></span><br><span class="line">socket #即将被废弃,请避免使用</span><br><span class="line">    - enabled: true/false, 表示是否开启该telnet方式的数据接收端口，这是为了方便用户一行行的发送数据给transfer</span><br><span class="line">    - listen: 表示监听的http端口</span><br><span class="line"></span><br><span class="line">judge</span><br><span class="line">    - enabled: true/false, 表示是否开启向judge发送数据</span><br><span class="line">    - batch: 数据转发的批量大小，可以加快发送速度，建议保持默认值</span><br><span class="line">    - connTimeout: 单位是毫秒，与后端建立连接的超时时间，可以根据网络质量微调，建议保持默认</span><br><span class="line">    - callTimeout: 单位是毫秒，发送数据给后端的超时时间，可以根据网络质量微调，建议保持默认</span><br><span class="line">    - pingMethod: 后端提供的ping接口，用来探测连接是否可用，必须保持默认</span><br><span class="line">    - maxConns: 连接池相关配置，最大连接数，建议保持默认</span><br><span class="line">    - maxIdle: 连接池相关配置，最大空闲连接数，建议保持默认</span><br><span class="line">    - replicas: 这是一致性hash算法需要的节点副本数量，建议不要变更，保持默认即可</span><br><span class="line">    - cluster: key-value形式的字典，表示后端的judge列表，其中key代表后端judge名字，value代表的是具体的ip:port</span><br><span class="line"></span><br><span class="line">graph</span><br><span class="line">    - enabled: true/false, 表示是否开启向graph发送数据</span><br><span class="line">    - batch: 数据转发的批量大小，可以加快发送速度，建议保持默认值</span><br><span class="line">    - connTimeout: 单位是毫秒，与后端建立连接的超时时间，可以根据网络质量微调，建议保持默认</span><br><span class="line">    - callTimeout: 单位是毫秒，发送数据给后端的超时时间，可以根据网络质量微调，建议保持默认</span><br><span class="line">    - pingMethod: 后端提供的ping接口，用来探测连接是否可用，必须保持默认</span><br><span class="line">    - maxConns: 连接池相关配置，最大连接数，建议保持默认</span><br><span class="line">    - maxIdle: 连接池相关配置，最大空闲连接数，建议保持默认</span><br><span class="line">    - replicas: 这是一致性hash算法需要的节点副本数量，建议不要变更，保持默认即可</span><br><span class="line">    - cluster: key-value形式的字典，表示后端的graph列表，其中key代表后端graph名字，value代表的是具体的ip:port(多个地址用逗号隔开, transfer会将同一份数据发送至各个地址，利用这个特性可以实现数据的多重备份)</span><br><span class="line"></span><br><span class="line">tsdb</span><br><span class="line">    - enabled: true/false, 表示是否开启向open tsdb发送数据</span><br><span class="line">    - batch: 数据转发的批量大小，可以加快发送速度</span><br><span class="line">    - connTimeout: 单位是毫秒，与后端建立连接的超时时间，可以根据网络质量微调，建议保持默认</span><br><span class="line">    - callTimeout: 单位是毫秒，发送数据给后端的超时时间，可以根据网络质量微调，建议保持默认</span><br><span class="line">    - maxConns: 连接池相关配置，最大连接数，建议保持默认</span><br><span class="line">    - maxIdle: 连接池相关配置，最大空闲连接数，建议保持默认</span><br><span class="line">    - retry: 连接后端的重试次数和发送数据的重试次数</span><br><span class="line">    - address: tsdb地址或者tsdb集群vip地址, 通过tcp连接tsdb.</span><br></pre></td></tr></table></figure>
+<p>  启动transfer命令 <code>~/open-falcon/open-falcon start transfer</code></p>
+<p>  停止transfer命令 <code>~/open-falcon/open-falcon stop transfer</code></p>
+<p>  监控transfer命令 <code>~/open-falcon/open-falcon monitor transfer</code></p>
+<p>  防火墙开放6060、8433端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=6060/tcp --permanent</span><br><span class="line">sudo firewall-cmd --add-port=8433/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>  校验服务,这里假定服务开启了6060的http监听端口。检验结果为ok表明服务正常启动。<code>curl -s &quot;127.0.0.1:6060/health&quot;</code></p>
+<p>  部署完成transfer组件后，请修改agent的配置，使其指向正确的transfer地址。在安装完graph和judge后，请修改transfer的相应配置、使其能够正确寻址到这两个组件。</p>
+</li>
+<li><p>配置Graph</p>
+<p>  graph是存储绘图数据的组件。graph组件 接收transfer组件推送上来的监控数据，同时处理api组件的查询请求、返回绘图数据。<code>vi ~/open-falcon/graph/config/cfg.json</code></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">false</span>, <span class="comment">//true or false, 是否开启debug日志</span></span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>, <span class="comment">//true or false, 表示是否开启该http端口，该端口为控制端口，主要用来对graph发送控制命令、统计命令、debug命令</span></span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6071"</span> <span class="comment">//表示监听的http端口</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"rpc"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>, <span class="comment">//true or false, 表示是否开启该rpc端口，该端口为数据接收端口</span></span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6070"</span> <span class="comment">//表示监听的rpc端口</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"rrd"</span>: &#123;</span><br><span class="line">        <span class="attr">"storage"</span>: <span class="string">"./data/6070"</span> <span class="comment">// 历史数据的文件存储路径（如有必要，请修改为合适的路）</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"db"</span>: &#123;</span><br><span class="line">        <span class="attr">"dsn"</span>: <span class="string">"root:password@tcp(127.0.0.1:3306)/graph?loc=Local&amp;parseTime=true"</span>, <span class="comment">//MySQL的连接信息，默认用户名是root，密码为空，host为127.0.0.1，database为graph（如有必要，请修改)</span></span><br><span class="line">        <span class="attr">"maxIdle"</span>: <span class="number">4</span>  <span class="comment">//MySQL连接池配置，连接池允许的最大连接数，保持默认即可</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"callTimeout"</span>: <span class="number">5000</span>,  <span class="comment">//RPC调用超时时间，单位ms</span></span><br><span class="line">    <span class="attr">"migrate"</span>: &#123;  <span class="comment">//扩容graph时历史数据自动迁移</span></span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">false</span>,  <span class="comment">//true or false, 表示graph是否处于数据迁移状态</span></span><br><span class="line">        <span class="attr">"concurrency"</span>: <span class="number">2</span>, <span class="comment">//数据迁移时的并发连接数，建议保持默认</span></span><br><span class="line">        <span class="attr">"replicas"</span>: <span class="number">500</span>, <span class="comment">//这是一致性hash算法需要的节点副本数量，建议不要变更，保持默认即可（必须和transfer的配置中保持一致）</span></span><br><span class="line">        <span class="attr">"cluster"</span>: &#123; <span class="comment">//未扩容前老的graph实例列表</span></span><br><span class="line">            <span class="attr">"graph-00"</span> : <span class="string">"127.0.0.1:6070"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动graph命令 <code>~/open-falcon/open-falcon start graph</code></p>
+<p>  停止graph命令 <code>~/open-falcon/open-falcon stop graph</code></p>
+<p>  监控graph命令 <code>~/open-falcon/open-falcon monitor graph</code></p>
+<p>  防火墙开放6071、6070端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=6070/tcp --permanent</span><br><span class="line">sudo firewall-cmd --add-port=6071/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>  部署完graph组件后，请修改transfer和api的配置，使这两个组件可以寻址到graph。</p>
+</li>
+<li><p>配置API</p>
+<p>  api组件，提供统一的restAPI操作接口。比如：api组件接收查询请求，根据一致性哈希算法去相应的graph实例查询不同metric的数据，然后汇总拿到的数据，最后统一返回给用户。<code>vi ~/open-falcon/api/config/cfg.json</code></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"log_level"</span>: <span class="string">"debug"</span>,</span><br><span class="line">    <span class="attr">"db"</span>: &#123;  <span class="comment">//数据库相关的连接配置信息</span></span><br><span class="line">        <span class="attr">"faclon_portal"</span>: <span class="string">"root:@tcp(127.0.0.1:3306)/falcon_portal?charset=utf8&amp;parseTime=True&amp;loc=Local"</span>,</span><br><span class="line">        <span class="attr">"graph"</span>: <span class="string">"root:password@tcp(127.0.0.1:3306)/graph?charset=utf8&amp;parseTime=True&amp;loc=Local"</span>,</span><br><span class="line">        <span class="attr">"uic"</span>: <span class="string">"root:password@tcp(127.0.0.1:3306)/uic?charset=utf8&amp;parseTime=True&amp;loc=Local"</span>,</span><br><span class="line">        <span class="attr">"dashboard"</span>: <span class="string">"root:password@tcp(127.0.0.1:3306)/dashboard?charset=utf8&amp;parseTime=True&amp;loc=Local"</span>,</span><br><span class="line">        <span class="attr">"alarms"</span>: <span class="string">"root:password@tcp(127.0.0.1:3306)/alarms?charset=utf8&amp;parseTime=True&amp;loc=Local"</span>,</span><br><span class="line">        <span class="attr">"db_bug"</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"graphs"</span>: &#123;  <span class="comment">// graph模块的部署列表信息</span></span><br><span class="line">        <span class="attr">"cluster"</span>: &#123;</span><br><span class="line">            <span class="attr">"graph-00"</span>: <span class="string">"127.0.0.1:6070"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"max_conns"</span>: <span class="number">100</span>,</span><br><span class="line">        <span class="attr">"max_idle"</span>: <span class="number">100</span>,</span><br><span class="line">        <span class="attr">"conn_timeout"</span>: <span class="number">1000</span>,</span><br><span class="line">        <span class="attr">"call_timeout"</span>: <span class="number">5000</span>,</span><br><span class="line">        <span class="attr">"numberOfReplicas"</span>: <span class="number">500</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"metric_list_file"</span>: <span class="string">"./api/data/metric"</span>,</span><br><span class="line">    <span class="attr">"web_port"</span>: <span class="string">":8080"</span>,  <span class="comment">// http监听端口</span></span><br><span class="line">    <span class="attr">"access_control"</span>: <span class="literal">true</span>, <span class="comment">// 如果设置为false，那么任何用户都可以具备管理员权限</span></span><br><span class="line">    <span class="attr">"salt"</span>: <span class="string">"pleaseinputwhichyouareusingnow"</span>,  <span class="comment">//数据库加密密码的时候的salt</span></span><br><span class="line">    <span class="attr">"skip_auth"</span>: <span class="literal">false</span>, <span class="comment">//如果设置为true，那么访问api就不需要经过认证</span></span><br><span class="line">    <span class="attr">"default_token"</span>: <span class="string">"default-token-used-in-server-side"</span>,  <span class="comment">//用于服务端各模块间的访问授权</span></span><br><span class="line">    <span class="attr">"gen_doc"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"gen_doc_path"</span>: <span class="string">"doc/module.html"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动api命令 <code>~/open-falcon/open-falcon start api</code></p>
+<p>  停止api命令 <code>~/open-falcon/open-falcon stop api</code></p>
+<p>  监控api命令 <code>~/open-falcon/open-falcon monitor api</code></p>
+<p>  防火墙开放8080端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=8080/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>  部署完成api组件后，请修改dashboard组件的配置、使其能够正确寻址到api组件。请确保api组件的graph列表 与 transfer的配置 一致。</p>
+</li>
+<li><p>配置HBS(Heartbeat Server)</p>
+<p>  心跳服务器，公司所有agent都会连到HBS，每分钟发一次心跳请求。<code>vi ~/open-falcon/hbs/config/cfg.json</code></p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">true</span>,</span><br><span class="line">    "database": "root:password@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&amp;parseTime=true", # Portal的数据库地址</span><br><span class="line">    "hosts": "", # portal数据库中有个host表，如果表中数据是从其他系统同步过来的，此处配置为sync，否则就维持默认，留空即可</span><br><span class="line">    "maxIdle": 100,</span><br><span class="line">    "listen": ":6030", # hbs监听的rpc地址</span><br><span class="line">    "trustable": [""],</span><br><span class="line">    "http": &#123;</span><br><span class="line">        "enabled": true,</span><br><span class="line">        "listen": "0.0.0.0:6031" # hbs监听的http地址</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动hbs命令 <code>~/open-falcon/open-falcon start hbs</code></p>
+<p>  停止hbs命令 <code>~/open-falcon/open-falcon stop hbs</code></p>
+<p>  监控hbs命令 <code>~/open-falcon/open-falcon monitor hbs</code></p>
+<p>  防火墙开放6030、6031端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=6030/tcp --permanent</span><br><span class="line">sudo firewall-cmd --add-port=6031/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>  如果你先部署了agent，后部署的hbs，那咱们部署完hbs之后需要回去修改agent的配置，把agent配置中的heartbeat部分enabled设置为true，addr设置为hbs的rpc地址。如果hbs的配置文件维持默认，rpc端口就是6030，http端口是6031，agent中应该配置为hbs的rpc端口，小心别弄错了。</p>
+</li>
+<li><p>配置Judge</p>
+<p>  Judge用于告警判断，agent将数据push给Transfer，Transfer不但会转发给Graph组件来绘图，还会转发给Judge用于判断是否触发告警。<code>vi ~/open-falcon/judge/config/cfg.json</code></p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"debugHost"</span>: <span class="string">"nil"</span>,</span><br><span class="line">    <span class="attr">"remain"</span>: <span class="number">11</span>,</span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6081"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"rpc"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6080"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"hbs"</span>: &#123;</span><br><span class="line">        "servers": ["127.0.0.1:6030"], # hbs最好放到lvs vip后面，所以此处最好配置为vip:port</span><br><span class="line">        "timeout": 300,</span><br><span class="line">        "interval": 60</span><br><span class="line">    &#125;,</span><br><span class="line">    "alarm": &#123;</span><br><span class="line">        "enabled": true,</span><br><span class="line">        "minInterval": 300, # 连续两个报警之间至少相隔的秒数，维持默认即可</span><br><span class="line">        "queuePattern": "event:p%v",</span><br><span class="line">        "redis": &#123;</span><br><span class="line">            "dsn": "127.0.0.1:6379", # 与alarm、sender使用一个redis</span><br><span class="line">            "maxIdle": 5,</span><br><span class="line">            "connTimeout": 5000,</span><br><span class="line">            "readTimeout": 5000,</span><br><span class="line">            "writeTimeout": 5000</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动judge命令 <code>~/open-falcon/open-falcon start judge</code></p>
+<p>  停止judge命令 <code>~/open-falcon/open-falcon stop judge</code></p>
+<p>  监控judge命令 <code>~/open-falcon/open-falcon monitor judge</code></p>
+<p>  防火墙开放6080、6081端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=6080/tcp --permanent</span><br><span class="line">sudo firewall-cmd --add-port=6081/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>搭建邮件服务网关</p>
+<p>  使用社区提供的mail-provider</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd $GOPATH/src/github.com/open-falcon &amp;&amp; git clone https://github.com/open-falcon/mail-provider.git</span><br><span class="line"></span><br><span class="line">cd mail-provider &amp;&amp; go get ./...</span><br><span class="line"></span><br><span class="line">./control build</span><br><span class="line"></span><br><span class="line">./control pack</span><br></pre></td></tr></table></figure>
+<p>  执行完上述命令之后在mail-provider目录下可找到falcon-mail-provider-0.0.1.tar.gz文件，拷贝到工作目录下</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir falcon-mail</span><br><span class="line"></span><br><span class="line">tar xf falcon-mail-provider-0.0.1.tar.gz -C falcon-mail</span><br><span class="line"></span><br><span class="line">cd falcon-mail</span><br></pre></td></tr></table></figure>
+<p>  编辑cfg.json文件 <code>vi cfg.json</code></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:4000"</span>,</span><br><span class="line">        <span class="attr">"token"</span>: <span class="string">""</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"smtp"</span>: &#123;</span><br><span class="line">        <span class="attr">"addr"</span>: <span class="string">"mail.example.com:25"</span>,</span><br><span class="line">        <span class="attr">"username"</span>: <span class="string">"falcon@example.com"</span>,</span><br><span class="line">        <span class="attr">"password"</span>: <span class="string">"123456"</span>,</span><br><span class="line">        <span class="attr">"from"</span>: <span class="string">"falcon@example.com"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  把smtp中的addr、username、password、from替换成自己的邮件服务器相关内容</p>
+<p>  启动邮件网关 <code>~/falcon-mail/control start</code><br>  停止邮件网关 <code>~/falcon-mail/control stop</code></p>
+<p>  测试邮件网关 <code>curl http://$ip:4000/sender/mail -d &quot;tos=a@a.com,b@b.com&amp;subject=xx&amp;content=yy&quot;</code></p>
+</li>
+<li><p>配置Alarm</p>
+<p>  alarm模块是处理报警event的，judge产生的报警event写入redis，alarm从redis读取处理，并进行不同渠道的发送。<code>vi ~/open-falcon/alarm/config/cfg.json</code></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"log_level"</span>: <span class="string">"debug"</span>,</span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:9912"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"redis"</span>: &#123;</span><br><span class="line">        <span class="attr">"addr"</span>: <span class="string">"127.0.0.1:6379"</span>,</span><br><span class="line">        <span class="attr">"maxIdle"</span>: <span class="number">5</span>,</span><br><span class="line">        <span class="attr">"highQueues"</span>: [</span><br><span class="line">            <span class="string">"event:p0"</span>,</span><br><span class="line">            <span class="string">"event:p1"</span>,</span><br><span class="line">            <span class="string">"event:p2"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"lowQueues"</span>: [</span><br><span class="line">            <span class="string">"event:p3"</span>,</span><br><span class="line">            <span class="string">"event:p4"</span>,</span><br><span class="line">            <span class="string">"event:p5"</span>,</span><br><span class="line">            <span class="string">"event:p6"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"userIMQueue"</span>: <span class="string">"/queue/user/im"</span>,</span><br><span class="line">        <span class="attr">"userSmsQueue"</span>: <span class="string">"/queue/user/sms"</span>,</span><br><span class="line">        <span class="attr">"userMailQueue"</span>: <span class="string">"/queue/user/mail"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"api"</span>: &#123;</span><br><span class="line">        <span class="attr">"im"</span>: <span class="string">"http://127.0.0.1:10086/wechat"</span>,  <span class="comment">//微信发送网关地址</span></span><br><span class="line">        <span class="attr">"sms"</span>: <span class="string">"http://127.0.0.1:10086/sms"</span>,  <span class="comment">//短信发送网关地址</span></span><br><span class="line">        <span class="attr">"mail"</span>: <span class="string">"http://127.0.0.1:10086/mail"</span>, <span class="comment">//邮件发送网关地址</span></span><br><span class="line">        <span class="attr">"dashboard"</span>: <span class="string">"http://127.0.0.1:8081"</span>,  <span class="comment">//dashboard模块的运行地址</span></span><br><span class="line">        <span class="attr">"plus_api"</span>:<span class="string">"http://127.0.0.1:8080"</span>,   <span class="comment">//falcon-plus api模块的运行地址</span></span><br><span class="line">        <span class="attr">"plus_api_token"</span>: <span class="string">"default-token-used-in-server-side"</span> <span class="comment">//用于和falcon-plus api模块服务端之间的通信认证token</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"falcon_portal"</span>: &#123;</span><br><span class="line">        <span class="attr">"addr"</span>: <span class="string">"root:password@tcp(127.0.0.1:3306)/alarms?charset=utf8&amp;loc=Asia%2FChongqing"</span>,</span><br><span class="line">        <span class="attr">"idle"</span>: <span class="number">10</span>,</span><br><span class="line">        <span class="attr">"max"</span>: <span class="number">100</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"worker"</span>: &#123;</span><br><span class="line">        <span class="attr">"im"</span>: <span class="number">10</span>,</span><br><span class="line">        <span class="attr">"sms"</span>: <span class="number">10</span>,</span><br><span class="line">        <span class="attr">"mail"</span>: <span class="number">50</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"housekeeper"</span>: &#123;</span><br><span class="line">        <span class="attr">"event_retention_days"</span>: <span class="number">7</span>,  <span class="comment">//报警历史信息的保留天数</span></span><br><span class="line">        <span class="attr">"event_delete_batch"</span>: <span class="number">100</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动alarm命令 <code>~/open-falcon/open-falcon start alarm</code></p>
+<p>  停止alarm命令 <code>~/open-falcon/open-falcon stop alarm</code></p>
+<p>  监控alarm命令 <code>~/open-falcon/open-falcon monitor alarm</code></p>
+<p>  防火墙开放9912端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=9912/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置nodata</p>
+<p>  nodata用于检测监控数据的上报异常。nodata和实时报警judge模块协同工作，过程为: 配置了nodata的采集项超时未上报数据，nodata生成一条默认的模拟数据；用户配置相应的报警策略，收到mock数据就产生报警。采集项上报异常检测，作为judge模块的一个必要补充，能够使judge的实时报警功能更加可靠、完善。<code>vi ~/open-falcon/nodata/config/cfg.json</code></p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6090"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"plus_api"</span>:&#123;</span><br><span class="line">        <span class="attr">"connectTimeout"</span>: <span class="number">500</span>,</span><br><span class="line">        <span class="attr">"requestTimeout"</span>: <span class="number">2000</span>,</span><br><span class="line">        "addr": "http://127.0.0.1:8080",  #falcon-plus api模块的运行地址</span><br><span class="line">        "token": "default-token-used-in-server-side"  #用于和falcon-plus api模块的交互认证token</span><br><span class="line">    &#125;,</span><br><span class="line">    "config": &#123;</span><br><span class="line">        "enabled": true,</span><br><span class="line">        "dsn": "root:@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&amp;parseTime=true&amp;wait_timeout=604800",</span><br><span class="line">        "maxIdle": 4</span><br><span class="line">    &#125;,</span><br><span class="line">    "collector":&#123;</span><br><span class="line">        "enabled": true,</span><br><span class="line">        "batch": 200,</span><br><span class="line">        "concurrent": 10</span><br><span class="line">    &#125;,</span><br><span class="line">    "sender":&#123;</span><br><span class="line">        "enabled": true,</span><br><span class="line">        "connectTimeout": 500,</span><br><span class="line">        "requestTimeout": 2000,</span><br><span class="line">        "transferAddr": "127.0.0.1:6060",  #transfer的http监听地址,一般形如"domain.transfer.service:6060"</span><br><span class="line">        "batch": 500</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动nodata命令 <code>~/open-falcon/open-falcon start nodata</code></p>
+<p>  停止nodata命令 <code>~/open-falcon/open-falcon stop nodata</code></p>
+<p>  监控nodata命令 <code>~/open-falcon/open-falcon monitor nodata</code></p>
+<p>  防火墙开放6090端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=6090/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置Aggregator</p>
+<p>  集群聚合模块。聚合某集群下的所有机器的某个指标的值，提供一种集群视角的监控体验。<code>vi ~/open-falcon/aggregator/config/cfg.json</code></p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6055"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"database"</span>: &#123;</span><br><span class="line">        <span class="attr">"addr"</span>: <span class="string">"root:@tcp(127.0.0.1:3306)/falcon_portal?loc=Local&amp;parseTime=true"</span>,</span><br><span class="line">        <span class="attr">"idle"</span>: <span class="number">10</span>,</span><br><span class="line">        <span class="attr">"ids"</span>: [<span class="number">1</span>, <span class="number">-1</span>],</span><br><span class="line">        <span class="attr">"interval"</span>: <span class="number">55</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"api"</span>: &#123;</span><br><span class="line">        <span class="attr">"connect_timeout"</span>: <span class="number">500</span>,</span><br><span class="line">        <span class="attr">"request_timeout"</span>: <span class="number">2000</span>,</span><br><span class="line">        "plus_api": "http://127.0.0.1:8080",  #falcon-plus api模块的运行地址</span><br><span class="line">        "plus_api_token": "default-token-used-in-server-side", #和falcon-plus api 模块交互的认证token</span><br><span class="line">        "push_api": "http://127.0.0.1:1988/v1/push"  #push数据的http接口，这是agent提供的接口</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  启动aggregator命令 <code>~/open-falcon/open-falcon start aggregator</code></p>
+<p>  停止aggregator命令 <code>~/open-falcon/open-falcon stop aggregator</code></p>
+<p>  监控aggregator命令 <code>~/open-falcon/open-falcon monitor aggregator</code></p>
+<p>  防火墙开放6055端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=6055/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置Gateway</p>
+<p>  如果您没有遇到机房分区问题，请直接忽略此组件。如果您已经遇到机房分区问题、并急需解决机房分区时监控数据回传的问题，请使用该组件。多IDC时，可能面对 “分区到中心的专线网络质量较差&amp;公网ACL不通” 等问题。这时，可以在分区内部署一套数据路由服务，接收本分区内的所有流量(包括所有的agent流量)，然后通过公网(开通ACL)，将数据push给中心的Transfer。<code>vi ~/open-falcon/gateway/config/cfg.json</code></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"http"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:6060"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"rpc"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:8433"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"socket"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"listen"</span>: <span class="string">"0.0.0.0:4444"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>: <span class="number">3600</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"transfer"</span>: &#123;</span><br><span class="line">        <span class="attr">"enabled"</span>: <span class="literal">true</span>, <span class="comment">//true/false, 表示是否开启向tranfser转发数据</span></span><br><span class="line">        <span class="attr">"batch"</span>: <span class="number">200</span>, <span class="comment">//数据转发的批量大小，可以加快发送速度，建议保持默认值</span></span><br><span class="line">        <span class="attr">"retry"</span>: <span class="number">2</span>, <span class="comment">//重试次数，默认1、不重试</span></span><br><span class="line">        <span class="attr">"connTimeout"</span>: <span class="number">1000</span>, <span class="comment">//毫秒，与后端建立连接的超时时间，可以根据网络质量微调，建议保持默认</span></span><br><span class="line">        <span class="attr">"callTimeout"</span>: <span class="number">5000</span>, <span class="comment">//毫秒，发送数据给后端的超时时间，可以根据网络质量微调，建议保持默认</span></span><br><span class="line">        <span class="attr">"maxConns"</span>: <span class="number">32</span>, <span class="comment">//连接池相关配置，最大连接数，建议保持默认</span></span><br><span class="line">        <span class="attr">"maxIdle"</span>: <span class="number">32</span>, <span class="comment">//连接池相关配置，最大空闲连接数，建议保持默认</span></span><br><span class="line">        <span class="attr">"cluster"</span>: &#123; <span class="comment">//transfer服务器集群，支持多条记录</span></span><br><span class="line">            <span class="attr">"t1"</span>: <span class="string">"127.0.0.1:8433"</span> <span class="comment">//一个transfer实例，形如"node":"$hostname:$port"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装配置dashboard</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd ~ &amp;&amp; git clone https://github.com/open-falcon/dashboard.git</span><br><span class="line">sudo yum install -y python-virtualenv</span><br><span class="line">sudo yum install -y python-devel</span><br><span class="line">sudo yum install -y openldap-devel</span><br><span class="line">sudo yum install -y mysql-devel</span><br><span class="line">sudo yum groupinstall "Development tools"</span><br><span class="line">cd ~/dashboard</span><br><span class="line">virtualenv ./env</span><br><span class="line">sudo ./env/bin/pip install -r pip_requirements.txt</span><br></pre></td></tr></table></figure>
+<p>  编辑<code>~/dashboard/rrd/config.py</code> 文件</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Falcon+ API 访问路径</span></span><br><span class="line">API_ADDR = os.environ.get(<span class="string">"API_ADDR"</span>,<span class="string">"http://127.0.0.1:8080/api/v1"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># portal database portal 数据库</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span> read from api instead of db</span></span><br><span class="line">PORTAL_DB_HOST = os.environ.get(<span class="string">"PORTAL_DB_HOST"</span>,<span class="string">"127.0.0.1"</span>)</span><br><span class="line">PORTAL_DB_PORT = int(os.environ.get(<span class="string">"PORTAL_DB_PORT"</span>,<span class="number">3306</span>))</span><br><span class="line">PORTAL_DB_USER = os.environ.get(<span class="string">"PORTAL_DB_USER"</span>,<span class="string">"root"</span>)</span><br><span class="line">PORTAL_DB_PASS = os.environ.get(<span class="string">"PORTAL_DB_PASS"</span>,<span class="string">""</span>)</span><br><span class="line">PORTAL_DB_NAME = os.environ.get(<span class="string">"PORTAL_DB_NAME"</span>,<span class="string">"falcon_portal"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># alarm database 告警数据库</span></span><br><span class="line"><span class="comment"># <span class="doctag">TODO:</span> read from api instead of db</span></span><br><span class="line">ALARM_DB_HOST = os.environ.get(<span class="string">"ALARM_DB_HOST"</span>,<span class="string">"127.0.0.1"</span>)</span><br><span class="line">ALARM_DB_PORT = int(os.environ.get(<span class="string">"ALARM_DB_PORT"</span>,<span class="number">3306</span>))</span><br><span class="line">ALARM_DB_USER = os.environ.get(<span class="string">"ALARM_DB_USER"</span>,<span class="string">"root"</span>)</span><br><span class="line">ALARM_DB_PASS = os.environ.get(<span class="string">"ALARM_DB_PASS"</span>,<span class="string">""</span>)</span><br><span class="line">ALARM_DB_NAME = os.environ.get(<span class="string">"ALARM_DB_NAME"</span>,<span class="string">"alarms"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ldap config 域控管理，如果不需集成域控，此处可以忽略</span></span><br><span class="line">LDAP_ENABLED = os.environ.get(<span class="string">"LDAP_ENABLED"</span>,<span class="literal">False</span>)</span><br><span class="line">LDAP_SERVER = os.environ.get(<span class="string">"LDAP_SERVER"</span>,<span class="string">"ldap.forumsys.com:389"</span>)</span><br><span class="line">LDAP_BASE_DN = os.environ.get(<span class="string">"LDAP_BASE_DN"</span>,<span class="string">"dc=example,dc=com"</span>)</span><br><span class="line">LDAP_BINDDN_FMT = os.environ.get(<span class="string">"LDAP_BINDDN_FMT"</span>,<span class="string">"uid=%s,dc=example,dc=com"</span>)</span><br><span class="line">LDAP_SEARCH_FMT = os.environ.get(<span class="string">"LDAP_SEARCH_FMT"</span>,<span class="string">"uid=%s"</span>)</span><br><span class="line">LDAP_ATTRS = [<span class="string">"cn"</span>,<span class="string">"mail"</span>,<span class="string">"telephoneNumber"</span>]</span><br><span class="line">LDAP_TLS_START_TLS = <span class="literal">False</span></span><br><span class="line">LDAP_TLS_CACERTDIR = <span class="string">""</span></span><br><span class="line">LDAP_TLS_CACERTFILE = <span class="string">"/etc/openldap/certs/ca.crt"</span></span><br><span class="line">LDAP_TLS_CERTFILE = <span class="string">""</span></span><br><span class="line">LDAP_TLS_KEYFILE = <span class="string">""</span></span><br><span class="line">LDAP_TLS_REQUIRE_CERT = <span class="literal">True</span></span><br><span class="line">LDAP_TLS_CIPHER_SUITE = <span class="string">""</span></span><br></pre></td></tr></table></figure>
+<p>  启动dashboard <code>~/dashboard/control start</code></p>
+<p>  停止dashboard运行 <code>~/dashboard/control stop</code></p>
+<p>   防火墙开放8081端口</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --add-port=8081/tcp --permanent</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/open-falcon/" rel="tag"># open falcon</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/25/CentOS7多网卡配置/" rel="next" title="CentOS7 多网卡配置">
+                <i class="fa fa-chevron-left"></i> CentOS7 多网卡配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/06/pyenv管理多版本python/" rel="prev" title="CentOS 7 上 pyenv 实现python多版本管理">
+                CentOS 7 上 pyenv 实现python多版本管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Riky Lee">
+          <p class="site-author-name" itemprop="name">Riky Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description">享受生活，享受自己</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#切换源为阿里源-非必须，个人习惯"><span class="nav-number">1.</span> <span class="nav-text">切换源为阿里源(非必须，个人习惯)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装git"><span class="nav-number">2.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装go语言环境"><span class="nav-number">3.</span> <span class="nav-text">安装go语言环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装redis"><span class="nav-number">4.</span> <span class="nav-text">安装redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装mysql"><span class="nav-number">5.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装open-falcon"><span class="nav-number">6.</span> <span class="nav-text">安装open falcon</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Riky Lee</span>
+
+  <span class="author" itemprop="copyrightHolder">&nbsp;&nbsp;<a class="theme-link" target="_blank" href="http://www.beian.miit.gov.cn/">赣ICP备18004560号</a></span>
+
+
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("sKghf9TSl0YblmUyfqxDkvMI-gzGzoHsz", "1KnuVkG5OU880DbIaJg2X0TI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
