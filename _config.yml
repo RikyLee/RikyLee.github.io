@@ -78,6 +78,6 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/aiguanglee/aiguanglee.github.io.git
-  name: aiguanglee
+  repo: https://github.com/rikylee/rikylee.github.io.git
+  name: rikylee
   branch: master
